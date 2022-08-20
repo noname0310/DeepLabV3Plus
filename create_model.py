@@ -80,7 +80,7 @@ def deeplab_v3_plus(image_size: int, num_classes: int) -> keras.Model:
         image_size: The size of the input images.
         num_classes: The number of classes in the dataset.
     Returns:
-        A Keras model. that compiled with the Adam optimizer.
+        A Keras model.
     """
     model_input: KerasTensor = keras.Input(shape=(image_size, image_size, 3))
     resnet50 = keras.applications.ResNet50(
