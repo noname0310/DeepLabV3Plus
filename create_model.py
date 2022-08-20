@@ -2,14 +2,10 @@
 Keras Deeplabv3+ model.
 """
 from typing import Union, Literal
-import matplotlib.pyplot as plt
 
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
-from constants import IMAGE_SIZE, MODEL_DIR, NUM_CLASSES
-
-from load_data import train_dataset, val_dataset
 
 # build model
 
@@ -111,4 +107,3 @@ def deeplab_v3_plus(image_size: int, num_classes: int) -> keras.Model:
     model_output: KerasTensor = layers.Conv2D(
         num_classes, kernel_size=(1, 1), padding="same")(tensor)
     return keras.Model(inputs=model_input, outputs=model_output)
-    
