@@ -75,6 +75,7 @@ def get_overlay(image: tf.Tensor, colored_mask: np.ndarray) -> np.ndarray:
     """
     image: Image.Image = tf.keras.preprocessing.image.array_to_img(image)
     image: np.ndarray = np.array(image).astype(np.uint8)
+    # pylint: disable=no-member
     overlay = cv2.addWeighted(image, 0.35, colored_mask, 0.65, 0)
     return overlay
 
