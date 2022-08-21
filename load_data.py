@@ -4,7 +4,7 @@ Keras Deeplabv3+ model.
 import os
 from glob import glob
 import tensorflow as tf
-from constants import BATCH_SIZE, DATA_DIR, IMAGE_SIZE, NUM_TRAIN_IMAGES, NUM_VAL_IMAGES
+from constants import BATCH_SIZE, DATA_DIR, IMAGE_SIZE, NUM_CLASSES, NUM_TRAIN_IMAGES, NUM_VAL_IMAGES
 
 # create dataset
 
@@ -34,6 +34,11 @@ def read_image(image_path: tf.Tensor, mask: bool = False) -> tf.Tensor:
     image: tf.Tensor = tf.io.read_file(image_path)
     if mask:
         image = tf.image.decode_png(image, channels=1)
+
+        image = tf.cast(image, tf.float32)
+        image = tf.clip_by_value(image, 0, NUM_CLASSES - 1)
+        image = tf.cast(image, tf.uint8)
+
         image.set_shape([None, None, 1])
         image = tf.image.resize(images=image, size=[IMAGE_SIZE, IMAGE_SIZE])
     else:
