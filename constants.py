@@ -5,9 +5,9 @@ import os
 
 IMAGE_SIZE = 512 // 2
 BATCH_SIZE = 4
-NUM_CLASSES = 20
-DATA_DIR = "./instance-level_human_parsing/Training"
-NUM_TRAIN_IMAGES = 1000
+NUM_CLASSES = 2
+DATA_DIR = "./unreal-car-dataset"
+NUM_TRAIN_IMAGES = 100
 NUM_VAL_IMAGES = 50
 
 MODEL_DIR = "./deeplabv3plus_weights.h5"
