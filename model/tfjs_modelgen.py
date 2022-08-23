@@ -9,11 +9,7 @@ from create_model import deeplab_v3_plus
 
 import tensorflowjs as tfjs
 
-# build model
-
 KerasTensor = Union[keras.layers.Layer, keras.layers.InputLayer]
-
-# pylint: disable=too-many-arguments
 
 model: keras.Model = deeplab_v3_plus(
     image_size=IMAGE_SIZE, num_classes=NUM_CLASSES)
