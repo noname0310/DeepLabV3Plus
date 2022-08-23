@@ -48,6 +48,10 @@ function decodeSegmentationMasks(
         green.add(tf.mul(maskEqualToClass, colorGreen));
         blue.add(tf.mul(maskEqualToClass, colorBlue));
 
+        colorRed.dispose();
+        colorGreen.dispose();
+        colorBlue.dispose();
+
         maskEqualToClass.dispose();
         color.dispose();
     }
