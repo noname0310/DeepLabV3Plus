@@ -43,7 +43,7 @@ def convolution_block(
         kernel_initializer=keras.initializers.HeNormal(),
     )(block_input)
     tensor = layers.BatchNormalization()(tensor)
-    return tf.nn.relu(tensor)
+    return tf.keras.layers.ReLU()(tensor)
 
 
 def dilated_spatial_pyramid_pooling(dspp_input: KerasTensor) -> KerasTensor:
