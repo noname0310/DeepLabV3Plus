@@ -12,12 +12,23 @@ const OuterDiv = styled.div`
     justify-content: center;
     align-items: center;
     height: 100vh;
-    width: 100vw;
+`;
+
+const InnerDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+`;
+
+const FlexWebcam = styled(Webcam)`
+    flex-grow: 1;
 `;
 
 const Canvas = styled.canvas`
-    width: 40%;
-    height: 40%;
+    flex-grow: 1;
 `;
 
 const videoConstraints = {
@@ -129,16 +140,17 @@ function App(): JSX.Element {
 
     return (
         <OuterDiv>
-            <Webcam 
-                videoConstraints={videoConstraints}
-                ref={webcamRef}
-                width={"40%"}
-            />
-            <Canvas 
-                width={screenShotDimensions.width}
-                height={screenShotDimensions.height}
-                ref={resultCanvasRef}
-            />
+            <InnerDiv>
+                <FlexWebcam 
+                    videoConstraints={videoConstraints}
+                    ref={webcamRef}
+                />
+                <Canvas 
+                    width={screenShotDimensions.width}
+                    height={screenShotDimensions.height}
+                    ref={resultCanvasRef}
+                />
+            </InnerDiv>
         </OuterDiv>
     );
 }
