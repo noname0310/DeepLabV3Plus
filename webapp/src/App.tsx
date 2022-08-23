@@ -11,7 +11,7 @@ const OuterDiv = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
 `;
 
 const InnerDiv = styled.div`
@@ -33,7 +33,8 @@ const Canvas = styled.canvas`
 
 const videoConstraints = {
     width: 256,
-    height: 256
+    height: 256,
+    facingMode: "environment"
 };
 
 const screenShotDimensions = {
