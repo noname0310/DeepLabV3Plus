@@ -1,3 +1,4 @@
+import Webcam from "react-webcam";
 import styled from "styled-components";
 
 const OuterDiv = styled.div`
@@ -12,7 +13,7 @@ const OuterDiv = styled.div`
 function App(): JSX.Element {
     return (
         <OuterDiv>
-            <h1>Hello World</h1>
+            <Webcam></Webcam>
         </OuterDiv>
     );
 }
