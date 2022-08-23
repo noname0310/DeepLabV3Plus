@@ -15,6 +15,11 @@ const OuterDiv = styled.div`
     width: 100vw;
 `;
 
+const Canvas = styled.canvas`
+    width: 40%;
+    height: 40%;
+`;
+
 const videoConstraints = {
     width: 256,
     height: 256
@@ -127,9 +132,9 @@ function App(): JSX.Element {
             <Webcam 
                 videoConstraints={videoConstraints}
                 ref={webcamRef}
-                width={"80%"}
+                width={"40%"}
             />
-            <canvas 
+            <Canvas 
                 width={screenShotDimensions.width}
                 height={screenShotDimensions.height}
                 ref={resultCanvasRef}
