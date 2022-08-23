@@ -97,6 +97,8 @@ function App(): JSX.Element {
             prediction.dispose();
             tensorExpanded.dispose();
             tensor.dispose();
+
+            URL.revokeObjectURL(image.src);
         };
     });
 
