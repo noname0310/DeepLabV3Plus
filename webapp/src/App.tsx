@@ -25,19 +25,16 @@ const screenShotDimensions = {
     height: 256
 };
 
-const colorMap = tf.tensor2d([[0, 0, 0], [0, 0, 255]]);
+const colorMap = tf.tensor2d([[0, 0, 0], [1, 1, 1]]);
 
 function decodeSegmentationMasks(
     mask: tf.Tensor<tf.Rank.R2>,
     colorMap: tf.Tensor<tf.Rank.R2>,
     classCount: number
 ): tf.Tensor<tf.Rank.R2> {
-    const redZero = tf.zerosLike(mask);
-    const red = redZero.asType("int32");
-    const greenZero = tf.zerosLike(mask);
-    const green = greenZero.asType("int32");
-    const blueZero = tf.zerosLike(mask);
-    const blue = blueZero.asType("int32");
+    let red = tf.zerosLike(mask);
+    let green = tf.zerosLike(mask);
+    let blue = tf.zerosLike(mask);
 
     for (let i = 0; i < classCount; i++) {
         const color = colorMap.gather(i);
@@ -51,9 +48,17 @@ function decodeSegmentationMasks(
         const multipliedGreen = tf.mul(maskEqualToClass, colorGreen);
         const multipliedBlue = tf.mul(maskEqualToClass, colorBlue);
 
-        red.add(multipliedRed);
-        green.add(multipliedGreen);
-        blue.add(multipliedBlue);
+        const newRed = tf.add(red, multipliedRed);
+        const newGreen = tf.add(green, multipliedGreen);
+        const newBlue = tf.add(blue, multipliedBlue);
+
+        red.dispose();
+        green.dispose();
+        blue.dispose();
+
+        red = newRed as tf.Tensor<tf.Rank.R2>;
+        green = newGreen as tf.Tensor<tf.Rank.R2>;
+        blue = newBlue as tf.Tensor<tf.Rank.R2>;
 
         multipliedRed.dispose();
         multipliedGreen.dispose();
@@ -69,11 +74,8 @@ function decodeSegmentationMasks(
 
     const stack = tf.stack([red, green, blue], 2) as tf.Tensor<tf.Rank.R2>;
     blue.dispose();
-    blueZero.dispose();
     green.dispose();
-    greenZero.dispose();
     red.dispose();
-    redZero.dispose();
     return stack;
 }
 
