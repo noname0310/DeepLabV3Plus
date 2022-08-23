@@ -52,7 +52,7 @@ function decodeSegmentationMasks(
         color.dispose();
     }
 
-    const stack = tf.stack([red, green, blue], 0) as tf.Tensor<tf.Rank.R2>;
+    const stack = tf.stack([red, green, blue], 2) as tf.Tensor<tf.Rank.R2>;
     red.dispose();
     green.dispose();
     blue.dispose();
@@ -62,6 +62,7 @@ function decodeSegmentationMasks(
 function App(): JSX.Element {
     const [ model, setModel ] = useState<tf.LayersModel | null>(null);
     const webcamRef = useRef<Webcam>(null);
+    const resultCanvasRef = useRef<HTMLCanvasElement>(null);
 
     useAsync(async () => {
         const model = await tf.loadLayersModel("tfjs-model/model.json");
@@ -85,6 +86,11 @@ function App(): JSX.Element {
             const predictionArgMax = tf.argMax(predictionSqueezed, 2) as tf.Tensor<tf.Rank.R2>;
             const predictionColorMap = decodeSegmentationMasks(predictionArgMax, colorMap, 2);
 
+            const resultCanvas = resultCanvasRef.current;
+            if (!resultCanvas) return;
+
+            await tf.browser.toPixels(predictionColorMap, resultCanvas);
+
             predictionColorMap.dispose();
             predictionArgMax.dispose();
             predictionSqueezed.dispose();
@@ -100,6 +106,11 @@ function App(): JSX.Element {
                 videoConstraints={videoConstraints}
                 ref={webcamRef}
                 width={"80%"}
+            />
+            <canvas 
+                width={screenShotDimensions.width}
+                height={screenShotDimensions.height}
+                ref={resultCanvasRef}
             />
         </OuterDiv>
     );
