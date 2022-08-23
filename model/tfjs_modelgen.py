@@ -14,6 +14,13 @@ KerasTensor = Union[keras.layers.Layer, keras.layers.InputLayer]
 model: keras.Model = deeplab_v3_plus(
     image_size=IMAGE_SIZE, num_classes=NUM_CLASSES)
 
+loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+model.compile(
+    optimizer=keras.optimizers.Adam(learning_rate=0.001),
+    loss=loss,
+    metrics=["accuracy"]
+)
+
 model.load_weights(MODEL_DIR)
 
 tfjs.converters.save_keras_model(model, "../webapp/public/tfjs-model")
