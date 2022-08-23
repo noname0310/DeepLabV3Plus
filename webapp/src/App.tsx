@@ -1,5 +1,10 @@
+import * as tf from "@tensorflow/tfjs";
+import { useRef, useState } from "react";
 import Webcam from "react-webcam";
 import styled from "styled-components";
+
+import useAnimationFrame from "./hooks/useAnimationFrame";
+import useAsync from "./hooks/useAsync";
 
 const OuterDiv = styled.div`
     display: flex;
@@ -10,10 +15,42 @@ const OuterDiv = styled.div`
     width: 100vw;
 `;
 
+const videoConstraints = {
+    width: 256,
+    height: 256
+};
+
+const screenShotDimensions = {
+    width: 256,
+    height: 256
+};
+
 function App(): JSX.Element {
+    const [ model, setModel ] = useState<tf.LayersModel | null>(null);
+    const webcamRef = useRef<Webcam>(null);
+
+    useAsync(async () => {
+        const model = await tf.loadLayersModel("tfjs-model/model.json");
+        setModel(model);
+    }, []);
+
+    useAnimationFrame(() => {
+        if (!model) return;
+        if (!webcamRef.current) return;
+
+        const imageSrc = webcamRef.current.getScreenshot(screenShotDimensions);
+        if (!imageSrc) return;
+
+        model;
+    });
+
     return (
         <OuterDiv>
-            <Webcam></Webcam>
+            <Webcam 
+                videoConstraints={videoConstraints}
+                ref={webcamRef}
+                width={"80%"}
+            />
         </OuterDiv>
     );
 }
