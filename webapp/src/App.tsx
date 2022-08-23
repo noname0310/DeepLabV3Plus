@@ -41,7 +41,17 @@ function App(): JSX.Element {
         const imageSrc = webcamRef.current.getScreenshot(screenShotDimensions);
         if (!imageSrc) return;
 
-        model;
+        const image = new Image();
+        image.src = imageSrc;
+        image.onload = async (): Promise<void> => {
+            const tensor = tf.browser.fromPixels(image);
+            // print dimensions of tensor
+            console.log(tensor.shape);
+
+            // const prediction = model.predict(tensor);
+            
+            // console.log(prediction);
+        };
     });
 
     return (
