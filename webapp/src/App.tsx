@@ -32,9 +32,12 @@ function decodeSegmentationMasks(
     colorMap: tf.Tensor<tf.Rank.R2>,
     classCount: number
 ): tf.Tensor<tf.Rank.R2> {
-    const red = tf.zerosLike(mask).asType("int32");
-    const green = tf.zerosLike(mask).asType("int32");
-    const blue = tf.zerosLike(mask).asType("int32");
+    const redZero = tf.zerosLike(mask);
+    const red = redZero.asType("int32");
+    const greenZero = tf.zerosLike(mask);
+    const green = greenZero.asType("int32");
+    const blueZero = tf.zerosLike(mask);
+    const blue = blueZero.asType("int32");
 
     for (let i = 0; i < classCount; i++) {
         const color = colorMap.gather(i);
@@ -44,9 +47,17 @@ function decodeSegmentationMasks(
         const colorGreen = color.gather(1);
         const colorBlue = color.gather(2);
 
-        red.add(tf.mul(maskEqualToClass, colorRed));
-        green.add(tf.mul(maskEqualToClass, colorGreen));
-        blue.add(tf.mul(maskEqualToClass, colorBlue));
+        const multipliedRed = tf.mul(maskEqualToClass, colorRed);
+        const multipliedGreen = tf.mul(maskEqualToClass, colorGreen);
+        const multipliedBlue = tf.mul(maskEqualToClass, colorBlue);
+
+        red.add(multipliedRed);
+        green.add(multipliedGreen);
+        blue.add(multipliedBlue);
+
+        multipliedRed.dispose();
+        multipliedGreen.dispose();
+        multipliedBlue.dispose();
 
         colorRed.dispose();
         colorGreen.dispose();
@@ -57,9 +68,12 @@ function decodeSegmentationMasks(
     }
 
     const stack = tf.stack([red, green, blue], 2) as tf.Tensor<tf.Rank.R2>;
-    red.dispose();
-    green.dispose();
     blue.dispose();
+    blueZero.dispose();
+    green.dispose();
+    greenZero.dispose();
+    red.dispose();
+    redZero.dispose();
     return stack;
 }
 
