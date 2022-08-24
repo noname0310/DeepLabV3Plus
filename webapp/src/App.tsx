@@ -117,7 +117,10 @@ function App(): JSX.Element {
         image.src = imageSrc;
         image.onload = async (): Promise<void> => {
             const tensor = tf.browser.fromPixels(image);
-            const tensorExpanded = tf.expandDims(tensor, 0);
+            const tensorResized = tf.image.resizeBilinear(tensor, [256, 256]);
+            const tensorNormalized = tf.div(tensorResized, 127.5) as tf.Tensor<tf.Rank.R2>;
+            const tensorMinusOne = tf.sub(tensorNormalized, 1.0) as tf.Tensor<tf.Rank.R2>;
+            const tensorExpanded = tf.expandDims(tensorMinusOne, 0);
             const prediction = model.predict(tensorExpanded) as tf.Tensor<tf.Rank.R4>;
             const predictionSqueezed = tf.squeeze(prediction);
             const predictionArgMax = tf.argMax(predictionSqueezed, 2) as tf.Tensor<tf.Rank.R2>;
@@ -133,6 +136,9 @@ function App(): JSX.Element {
             predictionSqueezed.dispose();
             prediction.dispose();
             tensorExpanded.dispose();
+            tensorMinusOne.dispose();
+            tensorNormalized.dispose();
+            tensorResized.dispose();
             tensor.dispose();
 
             URL.revokeObjectURL(image.src);
