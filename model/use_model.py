@@ -11,14 +11,14 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
 
-from constants import COLORMAP_DIR, IMAGE_SIZE, MODEL_DIR, NUM_CLASSES
+from constants import COLORMAP_DIR, IMAGE_SIZE, MODEL_WEIGHT_DIR, NUM_CLASSES
 from create_model import deeplab_v3_plus
 from load_data import read_image, train_images, val_images
 
 # load the model
 
 deeplabv3plus = deeplab_v3_plus(image_size=IMAGE_SIZE, num_classes=NUM_CLASSES)
-deeplabv3plus.load_weights(MODEL_DIR)
+deeplabv3plus.load_weights(MODEL_WEIGHT_DIR)
 
 # Loading the Colormap
 human_colormap: np.ndarray = loadmat(COLORMAP_DIR)["colormap"]

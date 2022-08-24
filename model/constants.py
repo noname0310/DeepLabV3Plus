@@ -10,7 +10,8 @@ DATA_DIR = "./unreal-car-dataset"
 NUM_TRAIN_IMAGES = 1000
 NUM_VAL_IMAGES = 500
 
-MODEL_DIR = "./deeplabv3plus_weights.h5"
+MODEL_WEIGHT_DIR = "./deeplabv3plus_weights.h5"
+MODEL_DIR = "./deeplabv3plus_model.h5"
 COLORMAP_DIR = "./instance-level_human_parsing/human_colormap.mat"
 
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "2"

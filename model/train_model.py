@@ -5,7 +5,7 @@ from typing import Union
 import matplotlib.pyplot as plt
 
 from tensorflow import keras
-from constants import IMAGE_SIZE, MODEL_DIR, NUM_CLASSES
+from constants import IMAGE_SIZE, MODEL_WEIGHT_DIR, NUM_CLASSES
 from create_model import deeplab_v3_plus
 
 from load_data import train_dataset, val_dataset
@@ -57,4 +57,4 @@ plt.show()
 
 # saving the model
 
-model.save_weights(MODEL_DIR)
+model.save_weights(MODEL_WEIGHT_DIR)
