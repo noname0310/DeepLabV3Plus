@@ -4,7 +4,7 @@ Save model to tensorflowjs format.
 from typing import Union
 
 from tensorflow import keras
-from constants import IMAGE_SIZE, NUM_CLASSES, MODEL_WEIGHT_DIR
+from constants import IMAGE_SIZE, NUM_CLASSES, MODEL_WEIGHT_DIR, MODEL_DIR
 from create_model import deeplab_v3_plus
 
 import tensorflowjs as tfjs
@@ -22,5 +22,7 @@ model.compile(
 )
 
 model.load_weights(MODEL_WEIGHT_DIR)
+
+model.save(MODEL_DIR)
 
 tfjs.converters.save_keras_model(model, "../webapp/public/tfjs-model")
