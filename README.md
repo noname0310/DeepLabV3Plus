@@ -24,6 +24,7 @@ Learned models are already included and can be used as soon as you run them.
 
 ###  [build](https://noname0310.github.io/DeepLabV3Plus/build/index.html)
 
+<img src="docs/webapp.png" alt="drawing" width="200"/>
 
 
 ## File Structure
