@@ -11,7 +11,7 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
 
-from constants import COLORMAP_DIR, MODEL_DIR
+from constants import COLORMAP_DIR, MODEL_DIR, NUM_CLASSES
 from load_data import read_image, train_images, val_images
 
 # load the model
@@ -21,7 +21,8 @@ deeplabv3plus = keras.models.load_model(MODEL_DIR)
 #deeplabv3plus.load_weights(MODEL_WEIGHT_DIR)
 
 # Loading the Colormap
-human_colormap: np.ndarray = loadmat(COLORMAP_DIR)["colormap"]
+human_colormap: np.ndarray = np.array([[0, 0, 0],[1, 0 ,0]])
+#loadmat(COLORMAP_DIR)["colormap"]
 human_colormap = human_colormap * 100
 human_colormap = human_colormap.astype(np.uint8)
 
@@ -115,7 +116,7 @@ def plot_predictions(images_list: list[str], colormap: np.ndarray, model: keras.
         image_tensor: tf.Tensor = read_image(image_file)
         prediction_mask = infer(image_tensor=image_tensor, model=model)
         prediction_colormap = decode_segmentation_masks(
-            prediction_mask, colormap, 20)
+            prediction_mask, colormap, NUM_CLASSES)
         overlay = get_overlay(image_tensor, prediction_colormap)
         plot_samples_matplotlib(
             [image_tensor, overlay, prediction_colormap], figsize=(18, 14)
