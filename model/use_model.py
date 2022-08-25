@@ -12,7 +12,7 @@ import tensorflow as tf
 from tensorflow import keras
 
 from constants import COLORMAP_DIR, MODEL_DIR, NUM_CLASSES
-from load_data import read_image, train_images, val_images
+from load_data import read_image, train_images, train_masks, val_images, val_masks
 
 # load the model
 
@@ -102,7 +102,7 @@ def plot_samples_matplotlib(
     plt.show()
 
 
-def plot_predictions(images_list: list[str], colormap: np.ndarray, model: keras.Model) -> None:
+def plot_predictions(images_list: list[str], masks_list: list[str], colormap: np.ndarray, model: keras.Model) -> None:
     """
     Plot the predictions for a list of images.
     Args:
@@ -112,15 +112,16 @@ def plot_predictions(images_list: list[str], colormap: np.ndarray, model: keras.
     Returns:
         None.
     """
-    for image_file in images_list:
+    for image_file, mask_file in list(zip(images_list, masks_list)):
         image_tensor: tf.Tensor = read_image(image_file)
+        mask_tensor: tf.Tensor = tf.multiply(read_image(mask_file), 255)
         prediction_mask = infer(image_tensor=image_tensor, model=model)
         prediction_colormap = decode_segmentation_masks(
             prediction_mask, colormap, NUM_CLASSES)
         overlay = get_overlay(image_tensor, prediction_colormap)
         plot_samples_matplotlib(
-            [image_tensor, overlay, prediction_colormap], figsize=(18, 14)
+            [image_tensor, overlay, prediction_colormap, mask_tensor], figsize=(18, 14)
         )
 
-plot_predictions(train_images[:4], human_colormap, model=deeplabv3plus)
-plot_predictions(val_images[:4], human_colormap, model=deeplabv3plus)
+plot_predictions(train_images[:4], train_masks[:4], human_colormap, model=deeplabv3plus)
+plot_predictions(val_images[:4], val_masks[:4], human_colormap, model=deeplabv3plus)
