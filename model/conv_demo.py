@@ -75,7 +75,7 @@ image_conv_concat: tf.Tensor = keras.layers.Concatenate(axis=-1)([
 
 image_conv_1_k_100: tf.Tensor = keras.layers.Conv2D(
     filters=1,
-    kernel_size=20,
+    kernel_size=30,
     dilation_rate=1,
     padding="same",
     use_bias=False,
