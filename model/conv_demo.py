@@ -72,6 +72,15 @@ image_conv_18 = tf.squeeze(image_conv_18, axis=0)
 image_conv_concat: tf.Tensor = keras.layers.Concatenate(axis=-1)([
     image_conv_1, image_conv_6, image_conv_12, image_conv_18
 ])
+image_conv_concat = keras.layers.Conv2D(
+    filters=1,
+    kernel_size=1,
+    dilation_rate=1,
+    padding="same",
+    use_bias=False,
+    kernel_initializer= keras.initializers.RandomNormal(mean=0.0, stddev=0.05, seed=1)
+)(tf.expand_dims(image_conv_concat, axis=0))
+image_conv_concat = tf.squeeze(image_conv_concat, axis=0)
 
 image_conv_1_k_100: tf.Tensor = keras.layers.Conv2D(
     filters=1,
